@@ -8,15 +8,15 @@
  * For docs, license, tests, and downloads, see: http://brianhaveri.github.com/Underscore.php
  */
 
-// Returns an instance of __ for OO-style calls
-function __($item=null) {
-  $__ = new __;
+// Returns an instance of ___ for OO-style calls
+function ___($item=null) {
+  $__ = new ___;
   if(func_num_args() > 0) $__->_wrapped = $item;
   return $__;
 }
 
 // Underscore.php
-class __ {
+class ___ {
   
   // Start the chain
   private $_chained = false; // Are we in a chain?
