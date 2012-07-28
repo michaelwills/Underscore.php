@@ -34,7 +34,7 @@ class UnderscoreChainingTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(array(10, 6, 2), $numbers, 'filtered and reversed the numbers in OO-style call');
     
     $numbers = array(1,2,3,4,5,6,7,8,9,10);
-    $numbers = __::chain($numbers)->select(function($n) { return $n % 2 === 0; })
+    $numbers = ___::chain($numbers)->select(function($n) { return $n % 2 === 0; })
                                   ->reject(function($n) { return $n % 4 === 0; })
                                   ->sortBy(function($n) { return -$n; })
                                   ->value();

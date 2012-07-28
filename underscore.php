@@ -23,7 +23,7 @@ class ___ {
   public function chain($item=null) {
     list($item) = self::_wrapArgs(func_get_args(), 1);
     
-    $__ = (isset($this) && isset($this->_chained) && $this->_chained) ? $this : __($item);
+    $__ = (isset($this) && isset($this->_chained) && $this->_chained) ? $this : ___($item);
     $__->_chained = true;
     return $__;
   }

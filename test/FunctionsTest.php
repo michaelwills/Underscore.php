@@ -7,25 +7,25 @@ class UnderscoreFunctionsTest extends PHPUnit_Framework_TestCase {
     $fib = function($n) use (&$fib) {
       return $n < 2 ? $n : $fib($n - 1) + $fib($n - 2);
     };
-    $fastFib = __::memoize($fib);
+    $fastFib = ___::memoize($fib);
     $this->assertEquals(55, $fib(10), 'a memoized version of fibonacci produces identical results');
     $this->assertEquals(55, $fastFib(10), 'a memoized version of fibonacci produces identical results');
     
     $o = function($str) { return $str; };
-    $fastO = __::memoize($o);
+    $fastO = ___::memoize($o);
     $this->assertEquals('toString', $o('toString'), 'checks hasOwnProperty');
     $this->assertEquals('toString', $fastO('toString'), 'checks hasOwnProperty');
   
     // extra
     $name = function() { return 'moe'; };
-    $fastName = __::memoize($name);
+    $fastName = ___::memoize($name);
     $this->assertEquals('moe', $name(), 'works with no parameters');
     $this->assertEquals('moe', $fastName(), 'works with no parameters');
     
     $names = function($one, $two, $three) {
       return join(', ', array($one, $two, $three));
     };
-    $fastNames = __::memoize($names);
+    $fastNames = ___::memoize($names);
     $this->assertEquals('moe, larry, curly', $names('moe', 'larry', 'curly'), 'works with multiple parameters');
     $this->assertEquals('moe, larry, curly', $fastNames('moe', 'larry', 'curly'), 'works with multiple parameters');
   
@@ -35,7 +35,7 @@ class UnderscoreFunctionsTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals('foo', $fastFoo(), 'can handle OO-style calls');
     
     $bar = function() { return 'bar'; };
-    $fastBar = __::memoize($bar, function($function, $args) {
+    $fastBar = ___::memoize($bar, function($function, $args) {
       return sha1(join('x', array(
         var_export($function, 1),
         var_export($args, 1)
@@ -48,7 +48,7 @@ class UnderscoreFunctionsTest extends PHPUnit_Framework_TestCase {
     $fibonacci = function($n) use (&$fibonacci) {
       return $n < 2 ? $n : $fibonacci($n - 1) + $fibonacci($n - 2);
     };
-    $fastFibonacci = __::memoize($fibonacci);
+    $fastFibonacci = ___::memoize($fibonacci);
     $this->assertEquals($fibonacci(2), $fastFibonacci(2));
   }
   
@@ -56,7 +56,7 @@ class UnderscoreFunctionsTest extends PHPUnit_Framework_TestCase {
     // from js
     $counter = 0;
     $incr = function() use (&$counter) { $counter++; };
-    $throttledIncr = __::throttle($incr, 100);
+    $throttledIncr = ___::throttle($incr, 100);
     $throttledIncr(); $throttledIncr(); $throttledIncr();
     usleep(120 * 1000); $throttledIncr();
     usleep(140 * 1000); $throttledIncr();
@@ -67,7 +67,7 @@ class UnderscoreFunctionsTest extends PHPUnit_Framework_TestCase {
     usleep(500 * 1000);
     $counter = 0;
     $incr = function() use (&$counter) { $counter++; };
-    $throttledIncr = __::throttle($incr, 100);
+    $throttledIncr = ___::throttle($incr, 100);
     $throttledIncr();
     usleep(220 * 1000);
     $this->assertEquals(1, $counter, 'incr called once');
@@ -75,7 +75,7 @@ class UnderscoreFunctionsTest extends PHPUnit_Framework_TestCase {
     usleep(500 * 1000);
     $counter = 0;
     $incr = function() use (&$counter) { $counter++; };
-    $throttledIncr = __::throttle($incr, 100);
+    $throttledIncr = ___::throttle($incr, 100);
     $throttledIncr(); $throttledIncr();
     usleep(220 * 1000);
     $this->assertEquals(1, $counter, 'incr called twice');
@@ -95,7 +95,7 @@ class UnderscoreFunctionsTest extends PHPUnit_Framework_TestCase {
   public function testOnce() {
     // from js + docs
     $num = 0;
-    $increment = __::once(function() use (&$num) { return $num++; });
+    $increment = ___::once(function() use (&$num) { return $num++; });
     $increment();
     $increment();
     $this->assertEquals(1, $num);
@@ -111,16 +111,16 @@ class UnderscoreFunctionsTest extends PHPUnit_Framework_TestCase {
   public function testWrap() {
     // from js
     $greet = function($name) { return 'hi: ' . $name; };
-    $backwards = __::wrap($greet, function($func, $name) { return $func($name) . ' ' . strrev($name); });
+    $backwards = ___::wrap($greet, function($func, $name) { return $func($name) . ' ' . strrev($name); });
     $this->assertEquals('hi: moe eom', $backwards('moe'), 'wrapped the salutation function');
     
     $inner = function() { return 'Hello '; };
     $arr = array('name'=>'Moe');
-    $arr['hi'] = __::wrap($inner, function($fn) use ($arr) { return $fn() . $arr['name']; });
+    $arr['hi'] = ___::wrap($inner, function($fn) use ($arr) { return $fn() . $arr['name']; });
     $this->assertEquals('Hello Moe', $arr['hi']());
     
     $noop = function() {};
-    $wrapped = __::wrap($noop, function($fn) { return func_get_args(); });
+    $wrapped = ___::wrap($noop, function($fn) { return func_get_args(); });
     $ret = $wrapped(array('whats', 'your'), 'vector', 'victor');
     $this->assertEquals(array($noop, array('whats', 'your'), 'vector', 'victor'), $ret);
     
@@ -132,7 +132,7 @@ class UnderscoreFunctionsTest extends PHPUnit_Framework_TestCase {
     
     // docs
     $hello = function($name) { return 'hello: ' . $name; };
-    $hi = __::wrap($hello, function($func) {
+    $hi = ___::wrap($hello, function($func) {
       return 'before, ' . $func('moe') . ', after'; 
     });
     $this->assertEquals('before, hello: moe, after', $hi());
@@ -142,10 +142,10 @@ class UnderscoreFunctionsTest extends PHPUnit_Framework_TestCase {
     // from js
     $greet = function($name) { return 'hi: ' . $name; };
     $exclaim = function($sentence) { return $sentence . '!'; };
-    $composed = __::compose($exclaim, $greet);
+    $composed = ___::compose($exclaim, $greet);
     $this->assertEquals('hi: moe!', $composed('moe'), 'can compose a function that takes another');
     
-    $composed = __::compose($greet, $exclaim);
+    $composed = ___::compose($greet, $exclaim);
     $this->assertEquals('hi: moe!', $composed('moe'), 'in this case, the functions are also commutative');
     
     // extra
@@ -155,7 +155,7 @@ class UnderscoreFunctionsTest extends PHPUnit_Framework_TestCase {
     // docs
     $greet = function($name) { return 'hi: ' . $name; };
     $exclaim = function($statement) { return $statement . '!'; };
-    $welcome = __::compose($exclaim, $greet);
+    $welcome = ___::compose($exclaim, $greet);
     $this->assertEquals('hi: moe!', $welcome('moe'));
   }
   
@@ -163,7 +163,7 @@ class UnderscoreFunctionsTest extends PHPUnit_Framework_TestCase {
     // from js
     $testAfter = function($afterAmount, $timesCalled) {
       $afterCalled = 0;
-      $after = __::after($afterAmount, function() use (&$afterCalled) {
+      $after = ___::after($afterAmount, function() use (&$afterCalled) {
         $afterCalled++;
       });
       while($timesCalled--) $after();
@@ -187,7 +187,7 @@ class UnderscoreFunctionsTest extends PHPUnit_Framework_TestCase {
   
     // docs
     $str = '';
-    $func = __::after(3, function() use(&$str) { $str = 'x'; });
+    $func = ___::after(3, function() use(&$str) { $str = 'x'; });
     $func();
     $func();
     $func();
